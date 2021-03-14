@@ -28,7 +28,7 @@ optdepends=(
 options=('debug')
 install="$_pkgname.install"
 _gitname="fcitx"
-source=("${_gitname}::git://github.com/fcitx/fcitx.git")
+source=("${_gitname}::git://github.com/lilydjwg/fcitx.git")
 md5sums=(SKIP)
 
 pkgver() {
