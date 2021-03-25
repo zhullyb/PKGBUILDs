@@ -7,12 +7,13 @@
 pkgname=fcitx-sogoupinyin-old
 pkgver=2.3.1.0112
 _time=1571302197
-pkgrel=1
+pkgrel=2
 pkgdesc="Sogou Pinyin for Linux"
 arch=("x86_64")
 url="https://pinyin.sogou.com/linux/"
 license=("custom")
-depends=("fcitx-lilydjwg-git" "fcitx-qt5" "kcm-fcitx" "opencc" "libidn11" "lsb-release" "xorg-xprop" "qtwebkit")
+depends=("fcitx-lilydjwg-git" "fcitx-qt5" "opencc" "libidn11" "lsb-release" "xorg-xprop" "qtwebkit")
+conflicts=("fcitx-sogoupinyin")
 
 source=("sogou-autostart"
 	"http://cdn2.ime.sogou.com/dl/index/${_time}/sogoupinyin_${pkgver}_amd64.deb")
