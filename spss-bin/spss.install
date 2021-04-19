@@ -1,0 +1,21 @@
+post_install(){
+    _code='5QQKZICZTE7RNC7JLPEXLTPFLJFBPIB67JNGJZVWJUYQ98YK2ZVINWM768YEZ7LVHHJYL7FP5D2C6UNWGJCT6WTPFYR7EDWGB2IMH64C3E4HY9N35P2QALF'
+    _lservrc='"1200" version "260", expires Midnight of Dec 31, 2099, exclusive'
+     echo   "${_code} ${_lservrc}" >/opt/spss/bin/lservrc
+     cd /opt/spss/bin/
+     ./licenseactivator "${_code}" > /dev/null 2>&1
+     
+     echo -e """\033[33m# *********************************************************************************************************************************
+# * If it is not activated, run
+# *
+# * cd /opt/spss/bin
+# * _code='5QQKZICZTE7RNC7JLPEXLTPFLJFBPIB67JNGJZVWJUYQ98YK2ZVINWM768YEZ7LVHHJYL7FP5D2C6UNWGJCT6WTPFYR7EDWGB2IMH64C3E4HY9N35P2QALF'
+# * sudo ./licenseactivator \${_code}
+# *********************************************************************************************************************************\033[0m
+"""
+    
+} 
+
+post_upgrade(){
+    post_install
+}

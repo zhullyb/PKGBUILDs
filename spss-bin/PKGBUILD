@@ -1,0 +1,81 @@
+# Maintainer: Sukanka <su975853527 [AT] gmail.com>
+pkgname=spss-bin
+_pkgname=spss
+pkgver=26.0.0
+pkgrel=1
+pkgdesc="IBM SPSS Statistics"
+arch=("x86_64")
+url='https://www.ibm.com/analytics/spss-statistics-software'
+license=('unknown')
+provides=('spss')
+source=("https://dl.sukanka.com/onedrive/Linux/ArchLinux/spss-bin/IBM_SPSS_Statistics_26.0_Linux.zip"
+    "com.ibm.spss.png::https://logodix.com/download/1598584")
+sha512sums=('e076a7be0c56b2c3093bb7c4812cf110531f9e542a3db00995705dea51601d49a2429c15117c662db23f94d2f593b221efbfbccdb53fb7e421b008d31041a3df'
+    'efe782e2cd49c69674db41dfa17cc1351d3d4ee500c496458a52d171cf1d6d2b8370cbe2e492fe00700ca0d8d4408a615ee7585e45a6b2bbd446f4b5b69a96e2')
+
+install=spss.install
+
+# For source, see https://e1aaab.link.yunpan.360.cn/lk/surl_y37F2W4BbA4#/-0
+
+_ibm_dir='IBM SPSS Statistics 26.0_ Linux'
+_code='5QQKZICZTE7RNC7JLPEXLTPFLJFBPIB67JNGJZVWJUYQ98YK2ZVINWM768YEZ7LVHHJYL7FP5D2C6UNWGJCT6WTPFYR7EDWGB2IMH64C3E4HY9N35P2QALF'
+
+prepare(){
+    cd "$srcdir/${_ibm_dir}"
+    
+    mv Administration/Installer.properties installer.properties
+    
+    # set installation options.
+#     sed -i "28c INSTALLER_UI=swing" installer.properties
+    sed -i "40c USER_INSTALL_DIR=$pkgdir/opt/spss/" installer.properties
+#     sed -i '67c InstallPython=0' installer.properties
+#     sed -i "60c AUTHCODE=${_code}" installer.properties
+}
+package(){
+    cd "$srcdir/${_ibm_dir}"
+    chmod a+x setup.bin
+    ./setup.bin -f installer.properties || true
+    
+    mkdir -p $pkgdir/usr/bin/
+    ln -s /opt/spss/bin/spssclient $pkgdir/usr/bin/spss
+    
+    cd "$pkgdir"/opt/spss/
+    rm -rf Uninstall*
+    
+    # cancel LC_ALL=en_US
+    sed -i '67d' bin/statsenv.sh
+    sed -i '46,48d' bin/licenseactivator
+    
+    # correct reference to path
+    sed -i "s|${pkgdir}||g" open.sh
+    sed -i "s|${pkgdir}||g" bin/statistics
+    sed -i "s|${pkgdir}||g" bin/spssclient
+    sed -i "s|${pkgdir}||g" bin/licsilent.sh
+    sed -i "s|${pkgdir}||g" bin/licensewizard
+    sed -i "s|${pkgdir}||g" bin/clientscriptingcfg.ini
+    sed -i "s|${pkgdir}||g" bin/statisticspython
+    sed -i "s|${pkgdir}||g" bin/statisticspython3
+    
+    #fix permissions
+    chmod g-w -R  "$pkgdir"/opt
+
+    _lservrc='"1200" version "260", expires Midnight of Dec 31, 2099, exclusive'
+     echo   "${_code} ${_lservrc}" >$pkgdir/opt/spss/bin/lservrc
+     cd $pkgdir/opt/spss/bin/
+     ./licenseactivator "${_code}" > /dev/null 2>&1
+     
+     # create desktop files
+     cd $srcdir
+     install -Dm644 com.ibm.spss.png $pkgdir/usr/share/icons/hicolor/256x256/apps/com.ibm.spss.png
+     mkdir -p $pkgdir/usr/share/applications
+     echo """[Desktop Entry]
+Type=Application
+Version=${pkgver}
+Name=${_pkgname}
+Comment=${pkgdesc}
+Exec=LC_ALL=en_US spss %F
+Icon=com.ibm.spss
+Terminal=false
+Categories=Education;
+""" > $pkgdir/usr/share/applications/spss.desktop
+}
