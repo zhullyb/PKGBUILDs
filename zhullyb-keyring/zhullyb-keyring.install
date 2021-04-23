@@ -1,0 +1,20 @@
+post_upgrade() {
+	if usr/bin/pacman-key -l >/dev/null 2>&1; then
+		usr/bin/pacman-key --populate zhullyb
+
+		# Re-enable key of omame
+		# See https://bugs.archlinux.org/task/35478
+		printf 'enable\nquit\n' | LANG=C \
+			gpg --homedir /etc/pacman.d/gnupg \
+			--no-permission-warning --command-fd 0 \
+			--quiet --batch --edit-key \
+			C3BABE097FBEE6460DEB26AE46E4E638C9135B3E \
+			2>/dev/null
+	fi
+}
+
+post_install() {
+	if [ -x usr/bin/pacman-key ]; then
+		post_upgrade
+	fi
+}

@@ -1,0 +1,17 @@
+# Maintainer: omame <me@omame.tech>
+
+pkgname=zhullyb-keyring
+pkgver=20210424
+pkgrel=1
+pkgdesc='zhullyb PGP keyring'
+arch=(any)
+license=(GPL)
+install=$pkgname.install
+source=('zhullyb.gpg' 'zhullyb-trusted')
+sha256sums=('afab36946dace62418ca9f088cf2438d77fe57f128bf1885696f5f625afb90b3'
+            '43e4eaa14437fb491d3631e98e087bd71f5dc3a757bf5c2803c271d19fb9c180')
+
+package() {
+  install -D -m644 zhullyb.gpg "$pkgdir/usr/share/pacman/keyrings/zhullyb.gpg"
+  install -D -m644 zhullyb-trusted "$pkgdir/usr/share/pacman/keyrings/zhullyb-trusted"
+}
