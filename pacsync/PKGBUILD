@@ -1,0 +1,16 @@
+# Maintainer: zhullyb <zhullyb@outlook.com>
+
+pkgname=pacsync
+pkgver=1
+pkgrel=1
+pkgdesc='sync with latest mirrors, download from fastest ones'
+arch=('any')
+url="https://blog.lilydjwg.me/2020/10/29/pacsync.215578.html"
+license=('Custom')
+depends=()
+source=("https://gist.githubusercontent.com/lilydjwg/314d7c08843a62139cfffb601f0b74d7/raw/30afec2b8e7f28507ecfcd79a87361c3a832d903/pacsync")
+md5sums=('bad7ac0999e953a33e0ff21068b0e2a1')
+
+package() {
+  install -Dm 755 "$srcdir/pacsync" "$pkgdir/usr/bin/pacsync"
+}
