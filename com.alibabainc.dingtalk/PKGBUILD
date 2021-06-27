@@ -1,0 +1,33 @@
+# Maintainer: zhullyb <zhullyb [at] outlook dot com>
+
+pkgname=com.alibabainc.dingtalk
+pkgver=0.9.0.121
+pkgrel=1
+pkgdesc="钉钉"
+arch=("x86_64")
+url="https://gov.dingtalk.com"
+license=("custom")
+depends=()
+options=(!strip)
+provides=('dingtalk')
+source=("com.alibabainc.dingtalk_0.9.0.121_amd64_ubuntu_18_20_56.deb"
+        "com.alibabainc.dingtalk.desktop")
+md5sums=('820e899e16bd8f3191e88740eead718e'
+         '141c17a74d15349583ce3f78034cacf8')
+
+prepare(){
+    cd ${srcdir}
+    tar -Jxvf data.tar.xz -C "${srcdir}"
+}
+
+package(){
+    cd ${srcdir}
+
+    mkdir -p ${pkgdir}/opt/apps/com.alibabainc.dingtalk/files
+    mv opt/apps/com.alibabainc.dingtalk/files/* ${pkgdir}/opt/apps/com.alibabainc.dingtalk/files
+
+    mkdir -p ${pkgdir}/usr/bin
+    ln -s /opt/apps/com.alibabainc.dingtalk/files/Elevator.sh ${pkgdir}/usr/bin/dingtalk
+
+    install -Dm644 com.alibabainc.dingtalk.desktop -t ${pkgdir}/usr/share/applications/
+}
