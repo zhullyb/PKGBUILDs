@@ -1,16 +1,18 @@
 # Maintainer: ssfdust <ssfdust@gmail.com>
 # Contributor: sukanka <su975853527@gmail.com>
-pkgname=freechat-uos
+pkgname=freechat-git
 _name=freechat
 url="https://github.com/eNkru/freechat"
 pkgrel=1
-pkgver=1.0.0.ea675e4
+pkgver=1.0.0.3a8304e
 pkgdesc="致力于打造macOS和Linux桌面下最好用的微信（wechat）客户端。"
 arch=("any")
 license=("MIT")
 makedepends=("git" "yarn" "gendesk")
 depends=('electron')
 provides=("freechat")
+replaces=('freechat-uos')
+conflicts=('freechat-uos')
 source=("git+https://github.com/eNkru/freechat.git")
 md5sums=("SKIP")
 options=(!strip)
@@ -37,6 +39,5 @@ package(){
     done;
     
     install -Dm644 "${srcdir}/${_name}.desktop" "${pkgdir}/usr/share/applications/${_name}.desktop"
-    sed -i '4c Name=freechat'
     install -Dm644 "${srcdir}"/${_name}.asar "${pkgdir}"/usr/share/${_name}/${_name}.asar
 }
