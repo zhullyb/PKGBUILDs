@@ -1,31 +1,49 @@
-# Maintainer: Peter Cai <peter at typeblog dot net>
-# Contributor: ForMat <2934301923 [AT] qq.com>
+# Maintainer: Sam L. Yes <samlukeyes123 at gmail dot com>
+# Contributor: mars <gzhqyz at gmail dot com>
+# Contributor: Peter Cai <peter at typeblog dot net>
+# Contributor: Mike Tong <3344907598 [AT] qq.com>
+
+# ref:
+#   https://github.com/archlinuxcn/repo/pull/1260
+#   https://github.com/laomocode/netease-cloud-music
+#   https://github.com/ZetaoYang/netease-cloud-music-appimage
+#   http://mirrors.ustc.edu.cn/deepin/pool/main/n/netease-cloud-music/
+#   https://blog.eh5.me/fix-ncm-flac-playing/
+
 pkgname=netease-cloud-music
 pkgver=1.2.1
-_pkgdate=20190428
-pkgrel=2
-pkgdesc="Netease Cloud Music, converted from .deb package"
-arch=("x86_64")
-url="http://music.163.com/"
-license=('custom')
-depends=('qcef' 'vlc')
+pkgrel=3
+pkgdesc='Netease Cloud Music, converted from .deb package, with IBus input method and online SQ support'
+arch=(x86_64)
+url='http://music.163.com'
+license=(custom GPL2)
+depends=(gtk2)
+provides=('netease-cloud-music')
+conflicts=('netease-cloud-music')
 source=(
-	"http://d1.music.126.net/dmusic/netease-cloud-music_${pkgver}_amd64_ubuntu_${_pkgdate}.deb"
-	"http://music.163.com/html/web2/service.html"
+  'http://music.163.com/html/web2/service.html'
+  'https://storage.zhullyb.top/netease-cloud-music_vlc_1.2.1_amd64.deb'
 )
-md5sums=('1f47c7dc3d9ce46da8099e539ee8a74d'
-         'SKIP')
-         DLAGENTS=("http::/usr/bin/curl -A 'Mozilla' -fLC - --retry 3 --retry-delay 3 -o %o %u")
+sha256sums=('a95922b289a9f04f24c6b7bc66a507ce74f64ed4a498ae94d626ed5172f802fa'
+            '7e5fb2efe724c1ef0d2d668c81248a7d56bada75f2b9787a7705d6b36bee81a0')
+
+# https://wiki.archlinux.org/index.php/Nonfree_applications_package_guidelines#Custom_DLAGENTS
+#DLAGENTS=("http::/usr/bin/curl -A 'Mozilla' -fLC - --retry 3 --retry-delay 3 -o %o %u")
 
 package() {
   cd ${srcdir}
-  tar -xvf data.tar.xz
-  install -d ${pkgdir}/opt/netease/netease-cloud-music
-  cp ${srcdir}/opt/netease/netease-cloud-music/netease-cloud-music ${pkgdir}/opt/netease/netease-cloud-music
-  cp ${srcdir}/opt/netease/netease-cloud-music/netease-cloud-music.bash ${pkgdir}/opt/netease/netease-cloud-music
-  cp -r ${srcdir}/usr ${pkgdir}
-  sed -i "3,5d" ${pkgdir}/opt/netease/netease-cloud-music/netease-cloud-music.bash
-  sed -i "2a\export XDG_CURRENT_DESKTOP=DDE" ${pkgdir}/opt/netease/netease-cloud-music/netease-cloud-music.bash
-  install -D -m644 service.html ${pkgdir}/usr/share/licenses/$pkgname/license.html
+  _optdir='opt/netease/netease-cloud-music'
+  bsdtar  -Jxf data.tar.xz -C ${pkgdir} \
+          --exclude="${_optdir}/libs/vlc/" \
+          --exclude="${_optdir}/libs/libvlc*" \
+          --exclude="${_optdir}/vlc-patching/usr/bin/" \
+          --exclude="${_optdir}/vlc-patching/usr/include/" \
+          --exclude="${_optdir}/vlc-patching/usr/lib/pkgconfig/" \
+          --exclude="${_optdir}/vlc-patching/usr/lib/vlc/lua/" \
+          --exclude="${_optdir}/vlc-patching/usr/share/" \
+          --exclude="${_optdir}/libs/libgdk-x11-2.0.so.0" \
+          --exclude="${_optdir}/libs/libgtk-x11-2.0.so.0" \
+
+  chown -R root:root ${pkgdir}
+  install -D -m644 service.html ${pkgdir}/usr/share/licenses/${pkgname}/license.html
 }
- 

@@ -1,0 +1,17 @@
+pkgbase = netease-cloud-music
+	pkgdesc = Netease Cloud Music, converted from .deb package, with IBus input method and online SQ support
+	pkgver = 1.2.1
+	pkgrel = 3
+	url = http://music.163.com
+	arch = x86_64
+	license = custom
+	license = GPL2
+	depends = gtk2
+	provides = netease-cloud-music
+	conflicts = netease-cloud-music
+	source = http://music.163.com/html/web2/service.html
+	source = https://storage.zhullyb.top/netease-cloud-music_vlc_1.2.1_amd64.deb
+	sha256sums = a95922b289a9f04f24c6b7bc66a507ce74f64ed4a498ae94d626ed5172f802fa
+	sha256sums = 7e5fb2efe724c1ef0d2d668c81248a7d56bada75f2b9787a7705d6b36bee81a0
+
+pkgname = netease-cloud-music
