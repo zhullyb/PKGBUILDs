@@ -1,0 +1,8 @@
+pkgname=pacman-mirrorlist-empty
+pkgver=1
+pkgrel=1
+pkgdesc="A empty package to provide pacman-mirrorlist"
+arch=('any')
+url="No url"
+license=('GPL')
+provides=('pacman-mirrorlist')
